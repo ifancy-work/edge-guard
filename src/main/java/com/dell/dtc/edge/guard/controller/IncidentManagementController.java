@@ -3,15 +3,17 @@
  */
 package com.dell.dtc.edge.guard.controller;
 
-import com.dell.dtc.edge.guard.generated.api.IncidentManagementApi;
-import com.dell.dtc.edge.guard.generated.models.AlertModel;
+import com.dell.dtc.edge.guard.model.AlertModel;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class IncidentManagementController implements IncidentManagementApi {
+@RestController(value = "api/v1")
+public class IncidentManagementController {
 
-    @Override
+    @PostMapping(value = "/alert", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AlertModel> createAlert() {
         // Anomaly Detection Service - If an anomaly, such as a temperature exceeding a threshold, is detected,
         // the service calls Incident Management Service.
