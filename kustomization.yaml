@@ -1,9 +1,0 @@
-resources:
-  - deploy/deployment.yml
-  - deploy/service.yml
-  - deploy/development/configmap.yml
-  - deploy/development/hpa.yml
-
-patchesStrategicMerge:
-  - deploy/tilt/overlays/service-patch.yml
-  - deploy/tilt/overlays/deployment-patch.yml
