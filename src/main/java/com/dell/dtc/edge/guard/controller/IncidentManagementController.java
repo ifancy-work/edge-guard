@@ -16,9 +16,6 @@ public class IncidentManagementController {
 
     @PostMapping("/alert")
     public ResponseEntity<AlertModel> createAlert() {
-        // Anomaly Detection Service - If an anomaly, such as a temperature exceeding a threshold, is detected,
-        // the service calls Incident Management Service.
-        // temperature,
         AlertModel model = AlertModel.builder().message("alert is working").build();
         return ResponseEntity.ok(model);
     }
