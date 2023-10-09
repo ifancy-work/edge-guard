@@ -1,0 +1,14 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: edge-guard-hpa
+  labels:
+    app: edge-guard
+spec:
+  maxReplicas: 5 # In case that targetCPUUtilizationPercentage will reach its threshold how much pods to scale up
+  minReplicas: 3 # The required number of app pods at all time
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: edge-guard
+  targetCPUUtilizationPercentage: 80 # The CPU threshold that once reached, a new pod will be created to support the load
