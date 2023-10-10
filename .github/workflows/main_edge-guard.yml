@@ -1,35 +1,38 @@
-name: Azure Spring App Deploy
-
-on:
-  push:
-    branches:
-      - main
+name: AzureSpringApps
+on: push
+env:
+  ASC_PACKAGE_PATH: ${{ github.workspace }}
+  JAVA_VERSION: 17
+  AZURE_SUBSCRIPTION: fc51e62f-aef2-49c3-b154-5b313db3f379
 
 jobs:
-  build:
+  deploy_to_production:
     runs-on: ubuntu-latest
-
+    name: deploy to production with source code
     steps:
-      - name: Checkout code
+      - name: Checkout GitHub Action
         uses: actions/checkout@v2
 
-      - name: Set up Java
-        uses: actions/setup-java@v2
+      - name: Setup JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v1
         with:
-          java-version: '17'
+          java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: maven build, clean
+          run: |
+            mvn clean package -DskipTests
 
-      - name: Deploy to Azure Spring Cloud
-        uses: azure/spring-cloud-deploy@v1
+      - name: Login via Azure CLI
+        uses: azure/login@v1
         with:
-          appName: 'edge-guard' # Replace with your app name
-          resourceGroup: 'edge-guard' # Replace with your resource group
-          location: 'East US' # Replace with your Azure region
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-        env:
-          SPRING_CLOUD_CLIENT_ID: ${{ secrets.AZURE_SPRING_CLOUD_CLIENT_ID }}
-          SPRING_CLOUD_CLIENT_SECRET: ${{ secrets.AZURE_SPRING_CLOUD_CLIENT_SECRET }}
-          SPRING_CLOUD_TENANT_ID: ${{ secrets.AZURE_SPRING_CLOUD_TENANT_ID }}
-
+      - name: deploy to production step with source code
+        uses: azure/spring-apps-deploy@v1
+        with:
+          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+          action: deploy
+          service-name: edge-guard
+          app-name: edge-guard
+          use-staging-deployment: false
+          package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
