@@ -22,7 +22,7 @@ jobs:
         run: mvn clean install
 
       - name: Deploy to Azure Spring Cloud
-        uses: azure/azure-spring-cloud-github-actions@v1
+        uses: azure/spring-cloud-deploy@v1
         with:
           appName: 'edge-guard' # Replace with your app name
           resourceGroup: 'edge-guard' # Replace with your resource group
