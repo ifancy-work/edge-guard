@@ -26,3 +26,5 @@ jobs:
           app-name: edge-guard
           use-staging-deployment: false
           package: ${{ env.ASC_PACKAGE_PATH }}
+          cpu: 4
+          memory: 8Gi
