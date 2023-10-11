@@ -5,6 +5,7 @@ package com.dell.dtc.edge.guard.service;
 
 import com.dell.dtc.edge.guard.client.AnomalyDetectionClient;
 import com.dell.dtc.edge.guard.model.request.ProvisioningRequest;
+import com.dell.dtc.edge.guard.model.response.ProvisionResponse;
 import com.dell.dtc.edge.guard.model.response.ProvisioningResponse;
 import com.dell.dtc.edge.guard.model.TemperatureData;
 import lombok.RequiredArgsConstructor;
@@ -20,33 +21,39 @@ public class AnomalyDetectionServiceImpl implements AnomalyDetectionService{
 
     public static final String ORG_ID = "2023";
     private final AnomalyDetectionClient anomalyDetectionClient;
-    public ProvisioningResponse sendTemperatureData(ProvisioningRequest provisioningRequest) {
+
+    public ProvisionResponse sendTemperatureData(ProvisioningRequest provisioningRequest) {
 
         log.info("provisioningRequest: {}", provisioningRequest.toString());
 
         // Generate a random temperature between 60°F and 140°F
-        float temperature = generateRandomTemperature();
+        int temperature = generateRandomTemperature();
+        String currentTime = LocalDateTime.now().toString();
 
         // Create a TemperatureData object
         TemperatureData temperatureData = new TemperatureData();
         temperatureData.setDeviceId(provisioningRequest.getDeviceId());
         temperatureData.setOrgId(ORG_ID);
         temperatureData.setTemperature(temperature);
-        temperatureData.setTimestamp(LocalDateTime.now().toString());
+        temperatureData.setTimestamp(currentTime);
 
         log.info("temperatureData: {}", temperatureData.toString());
         ProvisioningResponse provisioningResponse = anomalyDetectionClient.sendTemperatureData(temperatureData);
         log.info("provisioningResponse: {}", provisioningResponse.toString());
 
-        return provisioningResponse;
+        ProvisionResponse provisionResponse = ProvisionResponse.builder()
+                .timestamp(currentTime)
+                .location(provisioningRequest.getLocation())
+                .deviceType(provisioningRequest.getDeviceType())
+                .deviceId(provisioningRequest.getDeviceId())
+                .temperature(temperature)
+                .build();
+
+        return provisionResponse;
     }
 
-    private float generateRandomTemperature() {
-//        // Generate a random temperature between 60°F and 140°F
-//        return 60 + Math.random() * 80;
-
-        // Generate a random temperature between 53°F and 90°F
+    private int generateRandomTemperature() {
         double randomTemp = 50 + Math.random() * 45;
-        return (float) randomTemp;
+        return (int) randomTemp;
     }
 }

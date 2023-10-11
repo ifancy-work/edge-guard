@@ -16,5 +16,5 @@ public class TemperatureData {
     private String orgId;
 
     @JsonProperty("temperature")
-    private float temperature;
+    private int temperature;
 }

@@ -4,9 +4,9 @@
 package com.dell.dtc.edge.guard.service;
 
 import com.dell.dtc.edge.guard.model.request.ProvisioningRequest;
-import com.dell.dtc.edge.guard.model.response.ProvisioningResponse;
+import com.dell.dtc.edge.guard.model.response.ProvisionResponse;
 
 public interface AnomalyDetectionService {
     
-    ProvisioningResponse sendTemperatureData(ProvisioningRequest provisioningRequest);
+    ProvisionResponse sendTemperatureData(ProvisioningRequest provisioningRequest);
 }

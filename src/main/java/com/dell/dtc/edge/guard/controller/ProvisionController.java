@@ -1,6 +1,7 @@
 package com.dell.dtc.edge.guard.controller;
 
 import com.dell.dtc.edge.guard.model.request.ProvisioningRequest;
+import com.dell.dtc.edge.guard.model.response.ProvisionResponse;
 import com.dell.dtc.edge.guard.model.response.ProvisioningResponse;
 import com.dell.dtc.edge.guard.service.AnomalyDetectionServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,18 +22,18 @@ public class ProvisionController {
     private final AnomalyDetectionServiceImpl anomalyDetectionServiceImpl;
 
     @PostMapping
-    public ResponseEntity<ProvisioningResponse> createProvisionEdgeDevice(@RequestBody ProvisioningRequest provisioningRequest) {
+    public ResponseEntity<ProvisionResponse> createProvisionEdgeDevice(@RequestBody ProvisioningRequest provisioningRequest) {
 
         log.info("Inside createProvisionEdgeDevice: {}", provisioningRequest.toString());
         // Call service to send temperature data and get the response
-        ProvisioningResponse provisioningResponse = anomalyDetectionServiceImpl.sendTemperatureData(provisioningRequest);
+        ProvisionResponse provisioningResponse = anomalyDetectionServiceImpl.sendTemperatureData(provisioningRequest);
         log.info("provisioningResponse: {}", provisioningResponse);
         if (provisioningResponse != null) {
             // If the response is not null, return it with a 200 OK status
             return ResponseEntity.ok(provisioningResponse);
         } else {
             // If the response is null or empty, return a 404 Not Found status with an empty ProvisioningResponse object
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ProvisioningResponse.builder().build());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ProvisionResponse.builder().build());
         }
     }
 }
