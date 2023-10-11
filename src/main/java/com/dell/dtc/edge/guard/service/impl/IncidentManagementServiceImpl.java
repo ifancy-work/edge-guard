@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -41,7 +42,7 @@ public class IncidentManagementServiceImpl implements IncidentManagementService 
 
         // Create a single EventData object
         EventData event = EventData.builder()
-                .source(alertRequest.getDeviceId())
+                .source(alertRequest.getDeviceId() + UUID.randomUUID())
                 .check(CHECK)
                 .severity(determineSeverity(temperature))
                 .description(CHECK + " To " + temperature)
