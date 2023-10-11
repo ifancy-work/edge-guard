@@ -5,7 +5,8 @@ import lombok.Builder;
 
 @Data
 @Builder
-public class AlertModel {
+public class AlertResponse {
 
     private String message;
+
 }
