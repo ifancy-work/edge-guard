@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -27,9 +26,6 @@ public class IncidentManagementServiceImpl implements IncidentManagementService 
 
     @Value("${moogsoft.api.apiKey}")
     private String apiKey;
-
-    @Value("${spring.application.name}")
-    private String source;
 
     private final MoogsoftClient moogsoftClient;
 
@@ -45,7 +41,7 @@ public class IncidentManagementServiceImpl implements IncidentManagementService 
 
         // Create a single EventData object
         EventData event = EventData.builder()
-                .source(source + UUID.randomUUID())
+                .source(alertRequest.getDeviceId())
                 .check(CHECK)
                 .severity(determineSeverity(temperature))
                 .description(CHECK + " To " + temperature)

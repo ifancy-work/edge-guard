@@ -14,5 +14,7 @@ public class AlertRequest {
 
     @JsonProperty("temperature")
     private String temperature;
+    @JsonProperty("device_id")
+    private String deviceId;
 
 }
