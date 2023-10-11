@@ -16,7 +16,4 @@ public class ProvisioningRequest {
   private String deviceId;
   private String deviceType;
   private String location;
-  private OffsetDateTime creationTime;
-  private String orgId;
-  private Map<String, String> configurationSettings = null;
 }

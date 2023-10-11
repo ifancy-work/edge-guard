@@ -9,20 +9,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/provision")
 public class ProvisionController {
 
     private final AnomalyDetectionServiceImpl anomalyDetectionServiceImpl;
-    
-    @PostMapping
-    public ResponseEntity<ProvisioningResponse> createProvisionEdgeDevice(ProvisioningRequest provisioningRequest) {
 
+    @PostMapping
+    public ResponseEntity<ProvisioningResponse> createProvisionEdgeDevice(@RequestBody ProvisioningRequest provisioningRequest) {
+
+        log.info("Inside createProvisionEdgeDevice: {}", provisioningRequest.toString());
         // Call service to send temperature data and get the response
         ProvisioningResponse provisioningResponse = anomalyDetectionServiceImpl.sendTemperatureData(provisioningRequest);
-
+        log.info("provisioningResponse: {}", provisioningResponse);
         if (provisioningResponse != null) {
             // If the response is not null, return it with a 200 OK status
             return ResponseEntity.ok(provisioningResponse);
